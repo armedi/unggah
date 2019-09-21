@@ -1,6 +1,6 @@
 {
   "name": "gcs-upload",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/armedi/gcs-upload",
   "description": "Express middleware to upload file to google cloud storage.",
   "author": "Armedi",
