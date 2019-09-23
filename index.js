@@ -1,29 +1,35 @@
 const multer = require('multer')
-const { Storage } = require('@google-cloud/storage');
+const uploadToGcs = require('./uploadToGcs')
 
-const multerStorage = multer.memoryStorage()
-const upload = multer({ storage: multerStorage })
+module.exports = ({ limits, gcsConfig }) => {
+  const multerStorage = multer.memoryStorage()
+  const upload = multer({ storage: multerStorage, limits })
 
-const uploadToGcs = (fieldname, gcsOptions) => (req, res, next) => {
-  const { projectId, keyFilename, bucketName } = gcsOptions
+  return {
+    single: (fieldname) => [
+      upload.single(fieldname),
+      async (req, res, next) => {
+        req.body[fieldname] = await uploadToGcs({ file: req.file, gcsConfig })
+        next()
+      }
+    ],
 
-  const storage = new Storage({ projectId, keyFilename });
-  const bucket = storage.bucket(bucketName);
-  const filename = `${Date.now()}-${req.file.originalname}`
-  const file = bucket.file(filename);
-  const contents = req.file.buffer
+    array: (fieldname, maxCount) => [
+      upload.array(fieldname, maxCount),
+      async (req, res, next) => {
+        req.body[fieldname] = await Promise.all(req.files.map(file => uploadToGcs({ file, gcsConfig })))
+        next()
+      }
+    ],
 
-  file.save(contents, {
-    metadata: {
-      contentType: req.file.mimetype,
-      contentEncoding: req.file.encoding
-    }
-  })
-    .then((out) => {
-      req.body[fieldname] = `https://storage.googleapis.com/${bucketName}/${filename}`
-      next()
-    })
-    .catch(next)
+    fields: (fields) => [
+      upload.fields(fields),
+      async (req, res, next) => {
+        for (let [fieldname, files] of Object.entries(req.files)) {
+          req.body[fieldname] = await Promise.all(files.map(file => uploadToGcs({ file, gcsConfig })))
+        }
+        next()
+      }
+    ]
+  }
 }
-
-module.exports = ({fieldname, gcs}) => [upload.single(fieldname), uploadToGcs(fieldname, gcs)]
