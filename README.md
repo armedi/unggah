@@ -33,8 +33,8 @@ It will return an upload object that have 3 methods: (.single(), .array(), and .
 
 Don't forget the enctype="multipart/form-data" in your form.
 ```html
-<form action="/profile" method="post" enctype="multipart/form-data">
-  <input type="file" name="avatar" />
+<form action="/uploadSingle" method="post" enctype="multipart/form-data">
+  <input type="file" name="file" />
 </form>
 ```
 
