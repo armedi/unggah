@@ -9,26 +9,43 @@ module.exports = ({ limits, gcsConfig }) => {
     single: (fieldname) => [
       upload.single(fieldname),
       async (req, res, next) => {
-        req.body[fieldname] = await uploadToGcs({ file: req.file, gcsConfig })
-        next()
+        try {
+          req.body[fieldname] = await uploadToGcs({ file: req.file, gcsConfig })
+          next()
+        } catch (error) {
+          next(error)
+        }
       }
     ],
 
     array: (fieldname, maxCount) => [
       upload.array(fieldname, maxCount),
       async (req, res, next) => {
-        req.body[fieldname] = await Promise.all(req.files.map(file => uploadToGcs({ file, gcsConfig })))
-        next()
+        try {
+          req.body[fieldname] = await Promise.all(req.files.map(file => uploadToGcs({ file, gcsConfig })))
+          next()
+        } catch (error) {
+          next(error)
+        }
       }
     ],
 
     fields: (fields) => [
       upload.fields(fields),
       async (req, res, next) => {
-        for (let [fieldname, files] of Object.entries(req.files)) {
-          req.body[fieldname] = await Promise.all(files.map(file => uploadToGcs({ file, gcsConfig })))
+        try {
+          const links = await Promise.all(Object.entries(req.files)
+            .map(async ([fieldname, files]) => ({
+              [fieldname]: await Promise.all(files.map(file =>
+                uploadToGcs({ file, gcsConfig })
+              ))
+            }))
+          )
+          Object.assign(req.body, ...links)
+          next()
+        } catch (error) {
+          next(error)
         }
-        next()
       }
     ]
   }

@@ -1,6 +1,6 @@
 # gcs-upload
 
-This is a simple express middleware to upload file from user to Google Cloud Storage.
+This is a convenient wrapper around multer and google cloud storage API as a single express middleware to upload file from user to Google Cloud Storage.
 
 It will change the field for the uploaded file with a url string like http://storage.googleapis.com/`bucket-name`/`filename` that you can save in database.
 
@@ -51,22 +51,22 @@ const upload = gcsUpload({
     fileSize: 1e6 // in bytes
   },
   gcsConfig: {
-    keyFilename: '/Users/me/keyfile.json',
-    bucketName: 'myBucket'
+    keyFilename: '/Users/me/google-credential-keyfile.json',
+    bucketName: 'my-bucket'
   }
 })
 
-app.post('/uploadSingle', upload.single('file'), (req, res) => {
+app.post('/upload-single', upload.single('file'), (req, res) => {
   console.log(req.body)
   res.end()
 })
 
-app.post('/uploadArray', upload.array('files'), (req, res) => {
+app.post('/upload-array', upload.array('files'), (req, res) => {
   console.log(req.body)
   res.end()
 })
 
-app.post('/uploadFields',
+app.post('/upload-fields',
   upload.fields([{ name: 'file1' }, { name: 'file2' }]),
   (req, res) => {
     console.log(req.body)
