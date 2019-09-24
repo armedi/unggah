@@ -8,7 +8,7 @@ It will change the field for the uploaded file with a url string like http://sto
 ### Requirements
 1. Make sure you have a google cloud project with billing enabled.
 2. [Enable Google Storage API](https://console.cloud.google.com/flows/enableapi?apiid=storage-api.googleapis.com) for the project.
-3. [Create a service account]((https://console.cloud.google.com/apis/credentials/serviceaccountkey)) and download the credential in JSON format.
+3. [Create a service account](https://console.cloud.google.com/apis/credentials/serviceaccountkey) and download the credential in JSON format.
 
 
 ## Installation
@@ -33,7 +33,7 @@ It will return an upload object that have 3 methods: (.single(), .array(), and .
 
 Don't forget the enctype="multipart/form-data" in your form.
 ```html
-<form action="/uploadSingle" method="post" enctype="multipart/form-data">
+<form action="/upload-single" method="post" enctype="multipart/form-data">
   <input type="file" name="file" />
 </form>
 ```
