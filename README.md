@@ -76,3 +76,5 @@ app.post('/upload-fields',
 
 // .......
 ```
+
+To make uploaded files available for public view, add `Storage Object Viewer` role for allUsers. Step by step instruction can be found [here](https://cloud.google.com/storage/docs/access-control/making-data-public#buckets)
