@@ -9,6 +9,7 @@ module.exports = ({ limits, gcsConfig }) => {
     single: (fieldname) => [
       upload.single(fieldname),
       async (req, res, next) => {
+        if (!req.file) return next()
         try {
           req.body[fieldname] = await uploadToGcs({ file: req.file, gcsConfig })
           next()

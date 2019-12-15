@@ -26,7 +26,7 @@ npm install gcs-upload
   - keyFilename: file path for credential that you have downloaded before.
   - bucketName: the bucket name that will contain the uploaded file, you can create one through google cloud console.
 
-It will return an upload object that have 3 methods: (.single(), .array(), and .fields()). You can use all of it just like how you would use [multer](https://github.com/expressjs/multer#singlefieldname).
+It will return an upload object that have 3 methods: (.single(), .array(), and .fields()). You can use all of them just like how you would use [multer](https://github.com/expressjs/multer#singlefieldname).
 
 
 ### Basic Example
