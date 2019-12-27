@@ -23,7 +23,7 @@ npm install gcs-upload
 **options**:
 - _limit_: limits of uploaded data in object form (similar to limits option in [multer](https://github.com/expressjs/multer#limits))
 - _gcsConfig_:
-  - keyFilename: file path for credential that you have downloaded before.
+  - keyFilename: absolute or relative file path for credential that you have downloaded before.
   - bucketName: the bucket name that will contain the uploaded file, you can create one through google cloud console.
 
 It will return an upload object that have 3 methods: (.single(), .array(), and .fields()). You can use all of them just like how you would use [multer](https://github.com/expressjs/multer#singlefieldname).
