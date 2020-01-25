@@ -25,14 +25,9 @@ class GCS extends StorageEngine {
       });
   }
 
-  _removeFile(req, file, cb) {
-    const filename = this._nameFile(req, file)
+  delete(filename) {
     const bucketFile = this.bucket.file(filename)
-
-    bucketFile
-      .delete()
-      .then(_ => cb())
-      .catch(cb)
+    return bucketFile.delete()
   }
 }
 

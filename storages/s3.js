@@ -1,11 +1,43 @@
-class S3 {
-  _handleFile(req, file, cb) {
+const S3 = require('aws-sdk/clients/s3')
+const StorageEngine = require('./storageEngine')
 
+class S3Storage extends StorageEngine {
+  constructor({ endpoint, accessKeyId, secretAccessKey, bucketName, rename, ACL = 'public-read' }) {
+    super({ bucketName, rename })
+    this._s3 = new S3({
+      endpoint,
+      accessKeyId,
+      secretAccessKey
+    })
+    this.ACL = ACL
   }
 
-  _removeFile(req, file, cb) {
+  _handleFile(req, file, cb) {
+    const filename = this._nameFile(req, file)
 
+    this._s3.upload({
+      Bucket: this.bucketName,
+      Key: filename,
+      Body: file.stream,
+      ACL: this.ACL
+    }, (err, data) => {
+      cb(err, {
+        url: data.Location || `https://${this.bucketName}.${this._s3.endpoint.host}/${filename}`
+      })
+    })
+  }
+
+  delete(filename) {
+    return new Promise((resolve, reject) => {
+      this._s3.deleteObject({
+        Bucket: this.bucketName,
+        Key: filename,
+      }, (err, data) => {
+        if (err) reject(err)
+        else resolve()
+      })
+    })
   }
 }
 
-module.exports = options => new S3(options)
+module.exports = options => new S3Storage(options)
