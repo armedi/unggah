@@ -1,22 +1,23 @@
 {
-  "name": "gcs-upload",
-  "version": "1.2.0",
-  "homepage": "https://github.com/armedi/gcs-upload",
-  "description": "Express middleware to upload file to google cloud storage.",
+  "name": "unggah",
+  "version": "2.0.0-beta.0",
+  "homepage": "https://github.com/armedi/unggah",
+  "description": "Express middleware to upload file to google cloud storage or S3 compatible clouds.",
   "author": "Armedi",
   "main": "index.js",
   "dependencies": {
-    "@google-cloud/storage": "^4.2.0",
+    "@google-cloud/storage": "^4.3.0",
     "multer": "^1.4.2"
   },
   "keywords": [
     "google cloud storage",
+    "aws s3",
     "expressjs",
     "uploader"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/armedi/gcs-upload.git"
+    "url": "https://github.com/armedi/unggah.git"
   }
 }

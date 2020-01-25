@@ -1,54 +1,55 @@
 const multer = require('multer')
-const createBucket = require('./createBucket')
+const { gcs, s3 } = require('./storages')
 
-module.exports = ({ limits, gcsConfig }) => {
-  const multerStorage = multer.memoryStorage()
-  const upload = multer({ storage: multerStorage, limits })
+class Unggah {
+  constructor(options) {
+    this._upload = multer(options)
+  }
 
-  const saveToBucket = createBucket(gcsConfig)
-
-  return {
-    single: fieldname => [
-      upload.single(fieldname),
-      async (req, res, next) => {
+  single(fieldname) {
+    return [
+      this._upload.single(fieldname),
+      (req, res, next) => {
         if (!req.file) return next()
-        try {
-          req.body[fieldname] = await saveToBucket(req.file)
-          next()
-        } catch (error) {
-          next(error)
-        }
+        req.body[fieldname] = req.file.url
+        next()
       },
-    ],
+    ]
+  }
 
-    array: (fieldname, maxCount) => [
-      upload.array(fieldname, maxCount),
-      async (req, res, next) => {
-        try {
-          req.body[fieldname] = await Promise.all(req.files.map(saveToBucket))
-          next()
-        } catch (error) {
-          next(error)
-        }
+  array(fieldname, maxCount) {
+    return [
+      this._upload.array(fieldname, maxCount),
+      (req, res, next) => {
+        req.body[fieldname] = req.files.map(file => file.url)
+        next()
       },
-    ],
+    ]
+  }
 
-    fields: fields => [
-      upload.fields(fields),
-      async (req, res, next) => {
-        try {
-          const links = (await Promise.all(
-            Object.entries(req.files)
-              .map(([fieldname, files]) => Promise.all([fieldname, Promise.all(files.map(saveToBucket))]))
-          ))
-            .map(([fieldname, files]) => ({ [fieldname]: files }))
+  fields(fields) {
+    return [
+      this._upload.fields(fields),
+      (req, res, next) => {
+        const links = Object.entries(req.files)
+          .map(([fieldname, files]) => ({ [fieldname]: files.map(file => file.url) }))
 
-          Object.assign(req.body, ...links)
-          next()
-        } catch (error) {
-          next(error)
-        }
+        Object.assign(req.body, ...links)
+        next()
       },
-    ],
+    ]
+  }
+
+  none() {
+    return this._upload.none()
+  }
+
+  any() {
+    return this._upload.any()
   }
 }
+
+Unggah.gcs = gcs
+Unggah.s3 = s3
+
+module.exports = Unggah
