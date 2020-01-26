@@ -15,6 +15,15 @@ The url now can be saved to database.
 npm install unggah
 ```
 
+Then install either `aws-sdk` or `@google-cloud/storage`, depending on what service you're going to use.
+
+```bash
+npm install aws-sdk
+# or
+npm install @google-cloud/storage
+```
+
+
 ## Usage
 
 ```html
@@ -48,7 +57,7 @@ It will return an upload object that have 3 methods: (.single(), .array(), and .
 
 ### Using Google Cloud Storage
 
-#### Requirements
+#### Prerequisites
 1. Make sure you have a google cloud project with billing enabled.
 2. [Enable Google Storage API](https://console.cloud.google.com/flows/enableapi?apiid=storage-api.googleapis.com) for the project.
 3. [Create a bucket](https://console.cloud.google.com/storage/create-bucket) to store the files.
@@ -76,7 +85,7 @@ note:
 
 ### Using AWS S3 or S3 compatible providers
 
-#### Requirements
+#### Prerequisites
 1. [Create a bucket](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-bucket.html) to store the files.
 2. [Obtain access key id and it's secret](https://aws.amazon.com/blogs/security/how-to-find-update-access-keys-password-mfa-aws-management-console/) for your AWS user account.
 
