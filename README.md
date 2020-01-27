@@ -35,11 +35,11 @@ npm install @google-cloud/storage
 
 ```javascript
 const express = require('express')
-const Unggah = require('unggah')
+const unggah = require('unggah')
 
 const app = express()
 
-const upload = new Unggah({
+const upload = unggah({
   limits: {
     fileSize: 1e6 // in bytes
   },
@@ -69,11 +69,9 @@ It will return an upload object that have 3 methods: (.single(), .array(), and .
 - rename (optional): it's a string or a function that return a string which will be used as name for files being stored. If omitted it will use the original filename prefixed with the timestamp.
 
 ```javascript
-const gcs = require('unggah/storages/gcs')
-
-const storage = gcs({
+const storage = unggah.gcs({
   keyFilename: '/Users/me/google-credential-keyfile.json',
-  bucketName: 'my-bucket'
+  bucketName: 'my-bucket',
   rename: (req, file) => {
     return `${Date.now()}-${file.originalname}`  // this is the default
   }
@@ -93,15 +91,13 @@ note:
 
 #### storage configurations
 - endpoint: url endpoint for your S3 storage (example: `s3.ap-southeast-1.amazonaws.com`)
-- accessKeyId: Access Key ID that you get from requirement #2,
-- secretAccessKey: Secret Access Key that you get from requirement #2,
+- accessKeyId: Access Key ID that you get from prerequisite #2,
+- secretAccessKey: Secret Access Key that you get from prerequisite #2,
 - bucketName: the bucket name that will contain the uploaded file, you can create one through google cloud console.
 - rename (optional): it's a string or a function that return a string which will be used as name for files being stored. If omitted it will use the original filename prefixed with the timestamp.
 
 ```javascript
-const s3 = require('unggah/storages/s3')
-
-const storage = s3({
+const storage = unggah.s3({
   endpoint: 's3.ap-southeast-1.amazonaws.com',
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -117,7 +113,7 @@ const storage = s3({
 ```javascript
 // .......
 
-const upload = new Unggah({
+const upload = unggah({
   limits: {
     fileSize: 1e6 // in bytes
   },

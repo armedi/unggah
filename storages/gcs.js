@@ -31,4 +31,4 @@ class GCS extends StorageEngine {
   }
 }
 
-module.exports = options => new GCS(options)
+module.exports = GCS

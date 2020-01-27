@@ -1,7 +1,7 @@
 const S3 = require('aws-sdk/clients/s3')
 const StorageEngine = require('./storageEngine')
 
-class S3Storage extends StorageEngine {
+class SimpleStorageService extends StorageEngine {
   constructor({ endpoint, accessKeyId, secretAccessKey, bucketName, rename, ACL = 'public-read' }) {
     super({ bucketName, rename })
     this._s3 = new S3({
@@ -40,4 +40,4 @@ class S3Storage extends StorageEngine {
   }
 }
 
-module.exports = options => new S3Storage(options)
+module.exports = SimpleStorageService
