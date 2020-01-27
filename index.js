@@ -1,5 +1,4 @@
 const multer = require('multer')
-const { gcs, s3 } = require('./storages')
 
 class Unggah {
   constructor(options) {
@@ -49,7 +48,5 @@ class Unggah {
   }
 }
 
-Unggah.gcs = gcs
-Unggah.s3 = s3
 
 module.exports = Unggah

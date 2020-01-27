@@ -69,7 +69,9 @@ It will return an upload object that have 3 methods: (.single(), .array(), and .
 - rename (optional): it's a string or a function that return a string which will be used as name for files being stored. If omitted it will use the original filename prefixed with the timestamp.
 
 ```javascript
-const storage = Unggah.gcs({
+const gcs = require('unggah/storages/gcs')
+
+const storage = gcs({
   keyFilename: '/Users/me/google-credential-keyfile.json',
   bucketName: 'my-bucket'
   rename: (req, file) => {
@@ -97,7 +99,9 @@ note:
 - rename (optional): it's a string or a function that return a string which will be used as name for files being stored. If omitted it will use the original filename prefixed with the timestamp.
 
 ```javascript
-const storage = Unggah.s3({
+const s3 = require('unggah/storages/s3')
+
+const storage = s3({
   endpoint: 's3.ap-southeast-1.amazonaws.com',
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,

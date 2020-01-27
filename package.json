@@ -1,6 +1,6 @@
 {
   "name": "unggah",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "homepage": "https://github.com/armedi/unggah",
   "description": "Express middleware to upload file to google cloud storage or S3 compatible clouds.",
   "author": "Armedi",
