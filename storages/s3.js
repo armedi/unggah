@@ -19,7 +19,8 @@ class SimpleStorageService extends StorageEngine {
       Bucket: this.bucketName,
       Key: filename,
       Body: file.stream,
-      ACL: this.ACL
+      ACL: this.ACL,
+      ContentType: file.mimetype
     }, (err, data) => {
       cb(err, {
         url: data.Location || `https://${this.bucketName}.${this._s3.endpoint.host}/${filename}`
