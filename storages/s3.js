@@ -22,7 +22,7 @@ class SimpleStorageService extends StorageEngine {
       ACL: this.ACL
     }, (err, data) => {
       cb(err, {
-        url: data.Location || `https://${this.bucketName}.${this._s3.endpoint.host}/${filename}`
+        url: data ? (data.Location || `https://${this.bucketName}.${this._s3.endpoint.host}/${filename}`) : null
       })
     })
   }
